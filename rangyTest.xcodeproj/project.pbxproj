@@ -21,6 +21,13 @@
 		FDF4204C1998726500C1A8EA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF4202E1998726500C1A8EA /* UIKit.framework */; };
 		FDF420541998726500C1A8EA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FDF420521998726500C1A8EA /* InfoPlist.strings */; };
 		FDF420561998726500C1A8EA /* rangyTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FDF420551998726500C1A8EA /* rangyTestTests.m */; };
+		FDF4208B1999347600C1A8EA /* rangy-textrange.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF4207E1999333000C1A8EA /* rangy-textrange.js */; };
+		FDF4208C1999347600C1A8EA /* rangy-cssclassapplier.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF4207F1999333000C1A8EA /* rangy-cssclassapplier.js */; };
+		FDF4208D1999347600C1A8EA /* rangy-highlighter.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420801999333000C1A8EA /* rangy-highlighter.js */; };
+		FDF4208E1999347600C1A8EA /* rangy-core.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420811999333000C1A8EA /* rangy-core.js */; };
+		FDF4208F1999347600C1A8EA /* rangy-serializer.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420821999333000C1A8EA /* rangy-serializer.js */; };
+		FDF420901999347600C1A8EA /* claritas.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420831999333000C1A8EA /* claritas.js */; };
+		FDF4209319993FB700C1A8EA /* guidelines.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF4209119993D6000C1A8EA /* guidelines.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +60,13 @@
 		FDF420511998726500C1A8EA /* rangyTestTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "rangyTestTests-Info.plist"; sourceTree = "<group>"; };
 		FDF420531998726500C1A8EA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FDF420551998726500C1A8EA /* rangyTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = rangyTestTests.m; sourceTree = "<group>"; };
+		FDF4207E1999333000C1A8EA /* rangy-textrange.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-textrange.js"; sourceTree = "<group>"; };
+		FDF4207F1999333000C1A8EA /* rangy-cssclassapplier.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-cssclassapplier.js"; sourceTree = "<group>"; };
+		FDF420801999333000C1A8EA /* rangy-highlighter.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-highlighter.js"; sourceTree = "<group>"; };
+		FDF420811999333000C1A8EA /* rangy-core.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-core.js"; sourceTree = "<group>"; };
+		FDF420821999333000C1A8EA /* rangy-serializer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-serializer.js"; sourceTree = "<group>"; };
+		FDF420831999333000C1A8EA /* claritas.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = claritas.js; sourceTree = "<group>"; };
+		FDF4209119993D6000C1A8EA /* guidelines.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = guidelines.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +126,7 @@
 		FDF420301998726500C1A8EA /* rangyTest */ = {
 			isa = PBXGroup;
 			children = (
+				FDF4205F1998727800C1A8EA /* JS */,
 				FDF420391998726500C1A8EA /* RANAppDelegate.h */,
 				FDF4203A1998726500C1A8EA /* RANAppDelegate.m */,
 				FDF4203C1998726500C1A8EA /* Main.storyboard */,
@@ -150,6 +165,20 @@
 				FDF420521998726500C1A8EA /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FDF4205F1998727800C1A8EA /* JS */ = {
+			isa = PBXGroup;
+			children = (
+				FDF4207E1999333000C1A8EA /* rangy-textrange.js */,
+				FDF4207F1999333000C1A8EA /* rangy-cssclassapplier.js */,
+				FDF420801999333000C1A8EA /* rangy-highlighter.js */,
+				FDF420811999333000C1A8EA /* rangy-core.js */,
+				FDF420821999333000C1A8EA /* rangy-serializer.js */,
+				FDF420831999333000C1A8EA /* claritas.js */,
+				FDF4209119993D6000C1A8EA /* guidelines.js */,
+			);
+			name = JS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,6 +258,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDF4209319993FB700C1A8EA /* guidelines.js in Resources */,
+				FDF4208B1999347600C1A8EA /* rangy-textrange.js in Resources */,
+				FDF4208C1999347600C1A8EA /* rangy-cssclassapplier.js in Resources */,
+				FDF4208D1999347600C1A8EA /* rangy-highlighter.js in Resources */,
+				FDF4208E1999347600C1A8EA /* rangy-core.js in Resources */,
+				FDF4208F1999347600C1A8EA /* rangy-serializer.js in Resources */,
+				FDF420901999347600C1A8EA /* claritas.js in Resources */,
 				FDF420431998726500C1A8EA /* Images.xcassets in Resources */,
 				FDF420351998726500C1A8EA /* InfoPlist.strings in Resources */,
 				FDF4203E1998726500C1A8EA /* Main.storyboard in Resources */,
