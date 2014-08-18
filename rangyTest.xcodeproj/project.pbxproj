@@ -28,6 +28,9 @@
 		FDF4208F1999347600C1A8EA /* rangy-serializer.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420821999333000C1A8EA /* rangy-serializer.js */; };
 		FDF420901999347600C1A8EA /* claritas.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420831999333000C1A8EA /* claritas.js */; };
 		FDF4209319993FB700C1A8EA /* guidelines.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF4209119993D6000C1A8EA /* guidelines.js */; };
+		FDF4209F1999585000C1A8EA /* GLC.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF4209D1999573900C1A8EA /* GLC.js */; };
+		FDF420A319995E6B00C1A8EA /* RANEditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDF420A119995E6B00C1A8EA /* RANEditNoteViewController.m */; };
+		FDF420A419995E6B00C1A8EA /* RANEditNoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDF420A219995E6B00C1A8EA /* RANEditNoteViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +70,10 @@
 		FDF420821999333000C1A8EA /* rangy-serializer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-serializer.js"; sourceTree = "<group>"; };
 		FDF420831999333000C1A8EA /* claritas.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = claritas.js; sourceTree = "<group>"; };
 		FDF4209119993D6000C1A8EA /* guidelines.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = guidelines.js; sourceTree = "<group>"; };
+		FDF4209D1999573900C1A8EA /* GLC.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = GLC.js; sourceTree = "<group>"; };
+		FDF420A019995E6B00C1A8EA /* RANEditNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RANEditNoteViewController.h; sourceTree = "<group>"; };
+		FDF420A119995E6B00C1A8EA /* RANEditNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RANEditNoteViewController.m; sourceTree = "<group>"; };
+		FDF420A219995E6B00C1A8EA /* RANEditNoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RANEditNoteViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +139,9 @@
 				FDF4203C1998726500C1A8EA /* Main.storyboard */,
 				FDF4203F1998726500C1A8EA /* RANViewController.h */,
 				FDF420401998726500C1A8EA /* RANViewController.m */,
+				FDF420A019995E6B00C1A8EA /* RANEditNoteViewController.h */,
+				FDF420A119995E6B00C1A8EA /* RANEditNoteViewController.m */,
+				FDF420A219995E6B00C1A8EA /* RANEditNoteViewController.xib */,
 				FDF420421998726500C1A8EA /* Images.xcassets */,
 				FDF420311998726500C1A8EA /* Supporting Files */,
 			);
@@ -176,6 +186,7 @@
 				FDF420811999333000C1A8EA /* rangy-core.js */,
 				FDF420821999333000C1A8EA /* rangy-serializer.js */,
 				FDF420831999333000C1A8EA /* claritas.js */,
+				FDF4209D1999573900C1A8EA /* GLC.js */,
 				FDF4209119993D6000C1A8EA /* guidelines.js */,
 			);
 			name = JS;
@@ -258,6 +269,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDF4209F1999585000C1A8EA /* GLC.js in Resources */,
 				FDF4209319993FB700C1A8EA /* guidelines.js in Resources */,
 				FDF4208B1999347600C1A8EA /* rangy-textrange.js in Resources */,
 				FDF4208C1999347600C1A8EA /* rangy-cssclassapplier.js in Resources */,
@@ -267,6 +279,7 @@
 				FDF420901999347600C1A8EA /* claritas.js in Resources */,
 				FDF420431998726500C1A8EA /* Images.xcassets in Resources */,
 				FDF420351998726500C1A8EA /* InfoPlist.strings in Resources */,
+				FDF420A419995E6B00C1A8EA /* RANEditNoteViewController.xib in Resources */,
 				FDF4203E1998726500C1A8EA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -288,6 +301,7 @@
 			files = (
 				FDF4203B1998726500C1A8EA /* RANAppDelegate.m in Sources */,
 				FDF420371998726500C1A8EA /* main.m in Sources */,
+				FDF420A319995E6B00C1A8EA /* RANEditNoteViewController.m in Sources */,
 				FDF420411998726500C1A8EA /* RANViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

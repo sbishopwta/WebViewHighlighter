@@ -33,25 +33,23 @@
     [self injectJavascriptFile:@"rangy-cssclassapplier"];
     [self injectJavascriptFile:@"rangy-highlighter"];
     [self injectJavascriptFile:@"rangy-textrange"];
-    [self injectJavascriptFile:@"claritas"];
+    [self injectJavascriptFile:@"GLC"];
     [self.webView stringByEvaluatingJavaScriptFromString:@"rangy.init();"];
     [self.webView stringByEvaluatingJavaScriptFromString:
-     [NSString stringWithFormat:@"claritas.init(%@);", UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"true" : @"false"]];
+     [NSString stringWithFormat:@"guidelines.init(%@);", UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"true" : @"false"]];
 
         [UIView animateWithDuration:0.25 animations:^{
         [self.webView setAlpha:1.0];
     } completion:^(BOOL finished) {
         [self forceRedrawInWebView:self.webView];
     }];
-
-
 }
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
     if( action == @selector(removeHighlight))
     {
-        NSString* ret = [self.webView stringByEvaluatingJavaScriptFromString:@"claritas.hiliter.selectionOverlapsHighlight();"];
+        NSString* ret = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.selectionOverlapsHighlight();"];
         BOOL isHighlighted = [ret boolValue];
         return isHighlighted;
     }
@@ -84,23 +82,23 @@
     //Just to see if it works
 //    NSString *highlightedText = [self.webView stringByEvaluatingJavaScriptFromString:@"document.write('This Works')"];
     
-    [self.webView stringByEvaluatingJavaScriptFromString:@"claritas.hiliter.highlightSelection(\"claritasHilite\");"];
+    [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.highlightSelection(\"guidelinesHilite\");"];
     self.webView.userInteractionEnabled = NO;
     self.webView.userInteractionEnabled = YES;
     
-    NSString* hilites = [self.webView stringByEvaluatingJavaScriptFromString:@"claritas.hiliter.serialize();"];
-    NSString *test = [self.webView stringByEvaluatingJavaScriptFromString:@"createNoteFromSelection();"];
-    NSLog(@"%@", test);
+    NSString* hilites = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.serialize();"];
+//    NSString *test = [self.webView stringByEvaluatingJavaScriptFromString:@"createNoteFromSelection();"];
+//    NSLog(@"%@", test);
 
 }
 
 - (void)removeHighlight
 {
-    [self.webView stringByEvaluatingJavaScriptFromString:@"claritas.hiliter.unhighlightSelection();"];
+    [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.unhighlightSelection();"];
     self.webView.userInteractionEnabled = NO;
     self.webView.userInteractionEnabled = YES;
     
-    NSString* hilites = [self.webView stringByEvaluatingJavaScriptFromString:@"claritas.hiliter.serialize();"];
+    NSString* hilites = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.serialize();"];
     
 }
 
