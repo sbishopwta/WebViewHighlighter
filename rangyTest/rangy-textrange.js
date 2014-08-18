@@ -97,7 +97,7 @@ rangy.createModule("TextRange", function(api, module) {
         var p = el.firstChild;
         var sel = api.getSelection();
 
-        body.appendChild(el);
+        //body.appendChild(el);
         sel.collapse(p.lastChild, 2);
         sel.setStart(p.firstChild, 0);
         trailingSpaceInBlockCollapses = ("" + sel).length == 1;
@@ -106,7 +106,7 @@ rangy.createModule("TextRange", function(api, module) {
         sel.collapse(el, 2);
         sel.setStart(el.firstChild, 0);
         trailingSpaceBeforeBrCollapses = ("" + sel).length == 1;
-        body.removeChild(el);
+        //body.removeChild(el);
 
         sel.removeAllRanges();
     })();

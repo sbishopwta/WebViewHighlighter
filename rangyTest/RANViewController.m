@@ -23,7 +23,6 @@
     self.webView.delegate = self;
     [self configureWebView];
     [self configureMenuController];
-	// Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)setUpJavascript
@@ -33,72 +32,70 @@
     [self injectJavascriptFile:@"rangy-cssclassapplier"];
     [self injectJavascriptFile:@"rangy-highlighter"];
     [self injectJavascriptFile:@"rangy-textrange"];
-    [self injectJavascriptFile:@"GLC"];
+    [self injectJavascriptFile:@"jquery-2.1.1"];
+    [self injectJavascriptFile:@"jquery"];
+    [self injectJavascriptFile:@"rangy-selectionsaverestore"];
+    [self injectJavascriptFile:@"guidelines"];
     [self.webView stringByEvaluatingJavaScriptFromString:@"rangy.init();"];
-    [self.webView stringByEvaluatingJavaScriptFromString:
-     [NSString stringWithFormat:@"guidelines.init(%@);", UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"true" : @"false"]];
+   NSString *test =  [self.webView stringByEvaluatingJavaScriptFromString:
+    [NSString stringWithFormat:@"guidelines.init(%@);", UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"true" : @"false"]];
 
-        [UIView animateWithDuration:0.25 animations:^{
-        [self.webView setAlpha:1.0];
-    } completion:^(BOOL finished) {
-        [self forceRedrawInWebView:self.webView];
-    }];
-}
-
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
-{
-    if( action == @selector(removeHighlight))
-    {
-        NSString* ret = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.selectionOverlapsHighlight();"];
-        BOOL isHighlighted = [ret boolValue];
-        return isHighlighted;
-    }
-//    if(action == @selector(addNote))
-//    {
-//        return !self.showNote;
-//    }
     
-    return [super canPerformAction:action withSender:sender];
+//    [self.webView stringByEvaluatingJavaScriptFromString:@"init()"];
 }
-
 
 - (void)configureWebView
 {
-   [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"file:///Users/stevenbishop/Downloads/testHighlight.html"]]];
+    NSString *formatString = [NSString stringWithFormat:@"<!DOCTYPE html>\n"
+                              "<html lang=\"en\">\n"
+                              "  <head>\n"
+                              "    <meta charset=\"utf-8\">\n"
+                              "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n"
+                              "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+                              "\n"
+                              "    <link href=\"bootstrap-theme.css\" rel=\"stylesheet\">\n"
+                              "    <link href=\"bootstrap.min.css\" rel=\"stylesheet\">\n"
+                              "<link href=\"guidelines_light.css\" rel=\"stylesheet\">\n"
+                              "  </head>\n"
+                              "  <body>\n"
+                              "    \n"
+                              "    <div class=\"container\">%@",@"blah blah blah blah"];
+    
+    NSString *footerString = @"</div><!-- /div.container -->\n"
+    "\n"
+    "    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->\n"
+    "    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js\"></script>\n"
+    "    <!-- Include all compiled plugins (below), or include individual files as needed -->\n"
+    "    <script src=\"js/bootstrap.min.js\"></script>\n"
+    "  </body>\n"
+    "</html>";
+
+   
+    NSString *formattedString = [NSString stringWithFormat:@"%@ %@", formatString, footerString];
+    NSURL *bundlePath= [[NSBundle mainBundle] bundleURL];
+    [self.webView loadHTMLString:formattedString baseURL:bundlePath];
 }
 
 - (void)configureMenuController
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-    UIMenuItem *highlightItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(hightlightText)];
-        UIMenuItem *removeHighlight = [[UIMenuItem alloc] initWithTitle:@"Remove Highlight" action:@selector(removeHighlight)];
+    UIMenuItem *highlightItem = [[UIMenuItem alloc] initWithTitle:@"Add Note" action:@selector(createNoteFromSelection)];
+        UIMenuItem *removeHighlight = [[UIMenuItem alloc] initWithTitle:@"Remove Note" action:@selector(removeNoteFromSelection)];
     [[UIMenuController sharedMenuController] setMenuItems:@[highlightItem, removeHighlight]];
     });
 }
 
-- (void)hightlightText
+- (void)createNoteFromSelection
 {
-    //Just to see if it works
-//    NSString *highlightedText = [self.webView stringByEvaluatingJavaScriptFromString:@"document.write('This Works')"];
+    NSString *createdNoteString = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.createNoteFromSelection();"];
     
-    [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.highlightSelection(\"guidelinesHilite\");"];
-    self.webView.userInteractionEnabled = NO;
-    self.webView.userInteractionEnabled = YES;
-    
-    NSString* hilites = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.serialize();"];
-//    NSString *test = [self.webView stringByEvaluatingJavaScriptFromString:@"createNoteFromSelection();"];
-//    NSLog(@"%@", test);
+    NSString *saveNoteString = [self.webView stringByEvaluatingJavaScriptFromString:@"saveHighlightedText();"];
 
 }
 
-- (void)removeHighlight
+- (void)removeNoteFromSelection
 {
-    [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.unhighlightSelection();"];
-    self.webView.userInteractionEnabled = NO;
-    self.webView.userInteractionEnabled = YES;
-    
-    NSString* hilites = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.serialize();"];
     
 }
 
@@ -116,22 +113,22 @@
     NSLog(@"Webview finished loading");
 }
 
-- (void)forceRedrawInWebView:(UIWebView*)webView {
-    NSArray *views = webView.scrollView.subviews;
-    
-    for(int i = 0; i<views.count; i++){
-        UIView *view = views[i];
-        
-        if([NSStringFromClass([view class]) isEqualToString:@"UIWebBrowserView"]){
-            [view setNeedsDisplayInRect:webView.bounds]; //Webkit Repaint, usually fast
-            [view setNeedsLayout]; //Webkit Relayout
-            
-            //Causes redraw of *entire* UIWebView, onscreen and off, usually intensive
-            [view setNeedsDisplay]; [view setNeedsLayout];
-            break;
-        }
-    }
-}
+
+//- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+//{
+//    if( action == @selector(removeNoteFromSelection))
+//    {
+//        NSString* ret = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.selectionOverlapsHighlight();"];
+//        BOOL isHighlighted = [ret boolValue];
+//        return isHighlighted;
+//    }
+////    if(action == @selector(addNote))
+////    {
+////        return !self.showNote;
+////    }
+//
+//    return [super canPerformAction:action withSender:sender];
+//}
 
 
 @end

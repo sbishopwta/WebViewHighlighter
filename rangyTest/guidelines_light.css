@@ -1,0 +1,39 @@
+@font-face {
+ 	font-family: 'OpenSans-Regular';
+ 	src: url('../fonts/OpenSans-Regular.ttf');
+ }
+
+@font-face {
+ 	font-family: 'OpenSans-Bold';
+ 	src: url('../fonts/OpenSans-Bold.ttf');
+}
+
+@font-face {
+ 	font-family: 'OpenSans-Light';
+ 	src: url('../fonts/OpenSans-Light.ttf');
+}
+
+img {
+    max-width: 100%;
+    max-height: auto;
+}
+
+body {
+	background: #FFF;
+    color: #000;
+}
+
+.HighLighto
+{
+	background-color: #DEE5DB;
+}
+
+.HighLighto2
+{
+    background-color: #1d8fbb;
+}
+
+::selection
+{
+	background-color: #98d9f1;
+}

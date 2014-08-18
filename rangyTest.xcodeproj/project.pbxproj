@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD966D9A19A2803600BA1FDC /* guidelines.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8819A2801C00BA1FDC /* guidelines.js */; };
+		FD966D9B19A2803600BA1FDC /* jquery-2.1.1.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8919A2801C00BA1FDC /* jquery-2.1.1.js */; };
+		FD966D9C19A2803600BA1FDC /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8A19A2801C00BA1FDC /* jquery.js */; };
+		FD966D9D19A2803600BA1FDC /* rangy-core.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8B19A2801C00BA1FDC /* rangy-core.js */; };
+		FD966D9E19A2803600BA1FDC /* rangy-cssclassapplier.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8C19A2801C00BA1FDC /* rangy-cssclassapplier.js */; };
+		FD966D9F19A2803600BA1FDC /* rangy-highlighter.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8D19A2801C00BA1FDC /* rangy-highlighter.js */; };
+		FD966DA019A2803600BA1FDC /* rangy-selectionsaverestore.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8E19A2801C00BA1FDC /* rangy-selectionsaverestore.js */; };
+		FD966DA119A2803600BA1FDC /* rangy-serializer.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8F19A2801C00BA1FDC /* rangy-serializer.js */; };
+		FD966DA219A2803600BA1FDC /* rangy-textrange.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D9019A2801C00BA1FDC /* rangy-textrange.js */; };
+		FD966DA419A2991E00BA1FDC /* guidelines_light.css in Resources */ = {isa = PBXBuildFile; fileRef = FD966DA319A2991E00BA1FDC /* guidelines_light.css */; };
 		FDF4202B1998726500C1A8EA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF4202A1998726500C1A8EA /* Foundation.framework */; };
 		FDF4202D1998726500C1A8EA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF4202C1998726500C1A8EA /* CoreGraphics.framework */; };
 		FDF4202F1998726500C1A8EA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF4202E1998726500C1A8EA /* UIKit.framework */; };
@@ -21,14 +31,6 @@
 		FDF4204C1998726500C1A8EA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF4202E1998726500C1A8EA /* UIKit.framework */; };
 		FDF420541998726500C1A8EA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FDF420521998726500C1A8EA /* InfoPlist.strings */; };
 		FDF420561998726500C1A8EA /* rangyTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FDF420551998726500C1A8EA /* rangyTestTests.m */; };
-		FDF4208B1999347600C1A8EA /* rangy-textrange.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF4207E1999333000C1A8EA /* rangy-textrange.js */; };
-		FDF4208C1999347600C1A8EA /* rangy-cssclassapplier.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF4207F1999333000C1A8EA /* rangy-cssclassapplier.js */; };
-		FDF4208D1999347600C1A8EA /* rangy-highlighter.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420801999333000C1A8EA /* rangy-highlighter.js */; };
-		FDF4208E1999347600C1A8EA /* rangy-core.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420811999333000C1A8EA /* rangy-core.js */; };
-		FDF4208F1999347600C1A8EA /* rangy-serializer.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420821999333000C1A8EA /* rangy-serializer.js */; };
-		FDF420901999347600C1A8EA /* claritas.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF420831999333000C1A8EA /* claritas.js */; };
-		FDF4209319993FB700C1A8EA /* guidelines.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF4209119993D6000C1A8EA /* guidelines.js */; };
-		FDF4209F1999585000C1A8EA /* GLC.js in Resources */ = {isa = PBXBuildFile; fileRef = FDF4209D1999573900C1A8EA /* GLC.js */; };
 		FDF420A319995E6B00C1A8EA /* RANEditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDF420A119995E6B00C1A8EA /* RANEditNoteViewController.m */; };
 		FDF420A419995E6B00C1A8EA /* RANEditNoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDF420A219995E6B00C1A8EA /* RANEditNoteViewController.xib */; };
 /* End PBXBuildFile section */
@@ -44,6 +46,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FD966D8819A2801C00BA1FDC /* guidelines.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = guidelines.js; sourceTree = "<group>"; };
+		FD966D8919A2801C00BA1FDC /* jquery-2.1.1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-2.1.1.js"; sourceTree = "<group>"; };
+		FD966D8A19A2801C00BA1FDC /* jquery.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.js; sourceTree = "<group>"; };
+		FD966D8B19A2801C00BA1FDC /* rangy-core.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-core.js"; sourceTree = "<group>"; };
+		FD966D8C19A2801C00BA1FDC /* rangy-cssclassapplier.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-cssclassapplier.js"; sourceTree = "<group>"; };
+		FD966D8D19A2801C00BA1FDC /* rangy-highlighter.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-highlighter.js"; sourceTree = "<group>"; };
+		FD966D8E19A2801C00BA1FDC /* rangy-selectionsaverestore.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-selectionsaverestore.js"; sourceTree = "<group>"; };
+		FD966D8F19A2801C00BA1FDC /* rangy-serializer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-serializer.js"; sourceTree = "<group>"; };
+		FD966D9019A2801C00BA1FDC /* rangy-textrange.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-textrange.js"; sourceTree = "<group>"; };
+		FD966DA319A2991E00BA1FDC /* guidelines_light.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = guidelines_light.css; sourceTree = "<group>"; };
 		FDF420271998726500C1A8EA /* rangyTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rangyTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDF4202A1998726500C1A8EA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FDF4202C1998726500C1A8EA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -63,14 +75,6 @@
 		FDF420511998726500C1A8EA /* rangyTestTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "rangyTestTests-Info.plist"; sourceTree = "<group>"; };
 		FDF420531998726500C1A8EA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FDF420551998726500C1A8EA /* rangyTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = rangyTestTests.m; sourceTree = "<group>"; };
-		FDF4207E1999333000C1A8EA /* rangy-textrange.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-textrange.js"; sourceTree = "<group>"; };
-		FDF4207F1999333000C1A8EA /* rangy-cssclassapplier.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-cssclassapplier.js"; sourceTree = "<group>"; };
-		FDF420801999333000C1A8EA /* rangy-highlighter.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-highlighter.js"; sourceTree = "<group>"; };
-		FDF420811999333000C1A8EA /* rangy-core.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-core.js"; sourceTree = "<group>"; };
-		FDF420821999333000C1A8EA /* rangy-serializer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-serializer.js"; sourceTree = "<group>"; };
-		FDF420831999333000C1A8EA /* claritas.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = claritas.js; sourceTree = "<group>"; };
-		FDF4209119993D6000C1A8EA /* guidelines.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = guidelines.js; sourceTree = "<group>"; };
-		FDF4209D1999573900C1A8EA /* GLC.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = GLC.js; sourceTree = "<group>"; };
 		FDF420A019995E6B00C1A8EA /* RANEditNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RANEditNoteViewController.h; sourceTree = "<group>"; };
 		FDF420A119995E6B00C1A8EA /* RANEditNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RANEditNoteViewController.m; sourceTree = "<group>"; };
 		FDF420A219995E6B00C1A8EA /* RANEditNoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RANEditNoteViewController.xib; sourceTree = "<group>"; };
@@ -180,14 +184,16 @@
 		FDF4205F1998727800C1A8EA /* JS */ = {
 			isa = PBXGroup;
 			children = (
-				FDF4207E1999333000C1A8EA /* rangy-textrange.js */,
-				FDF4207F1999333000C1A8EA /* rangy-cssclassapplier.js */,
-				FDF420801999333000C1A8EA /* rangy-highlighter.js */,
-				FDF420811999333000C1A8EA /* rangy-core.js */,
-				FDF420821999333000C1A8EA /* rangy-serializer.js */,
-				FDF420831999333000C1A8EA /* claritas.js */,
-				FDF4209D1999573900C1A8EA /* GLC.js */,
-				FDF4209119993D6000C1A8EA /* guidelines.js */,
+				FD966D8819A2801C00BA1FDC /* guidelines.js */,
+				FD966D8919A2801C00BA1FDC /* jquery-2.1.1.js */,
+				FD966D8A19A2801C00BA1FDC /* jquery.js */,
+				FD966D8B19A2801C00BA1FDC /* rangy-core.js */,
+				FD966D8C19A2801C00BA1FDC /* rangy-cssclassapplier.js */,
+				FD966D8D19A2801C00BA1FDC /* rangy-highlighter.js */,
+				FD966D8E19A2801C00BA1FDC /* rangy-selectionsaverestore.js */,
+				FD966D8F19A2801C00BA1FDC /* rangy-serializer.js */,
+				FD966D9019A2801C00BA1FDC /* rangy-textrange.js */,
+				FD966DA319A2991E00BA1FDC /* guidelines_light.css */,
 			);
 			name = JS;
 			sourceTree = "<group>";
@@ -269,14 +275,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FDF4209F1999585000C1A8EA /* GLC.js in Resources */,
-				FDF4209319993FB700C1A8EA /* guidelines.js in Resources */,
-				FDF4208B1999347600C1A8EA /* rangy-textrange.js in Resources */,
-				FDF4208C1999347600C1A8EA /* rangy-cssclassapplier.js in Resources */,
-				FDF4208D1999347600C1A8EA /* rangy-highlighter.js in Resources */,
-				FDF4208E1999347600C1A8EA /* rangy-core.js in Resources */,
-				FDF4208F1999347600C1A8EA /* rangy-serializer.js in Resources */,
-				FDF420901999347600C1A8EA /* claritas.js in Resources */,
+				FD966D9A19A2803600BA1FDC /* guidelines.js in Resources */,
+				FD966D9B19A2803600BA1FDC /* jquery-2.1.1.js in Resources */,
+				FD966D9C19A2803600BA1FDC /* jquery.js in Resources */,
+				FD966DA419A2991E00BA1FDC /* guidelines_light.css in Resources */,
+				FD966D9D19A2803600BA1FDC /* rangy-core.js in Resources */,
+				FD966D9E19A2803600BA1FDC /* rangy-cssclassapplier.js in Resources */,
+				FD966D9F19A2803600BA1FDC /* rangy-highlighter.js in Resources */,
+				FD966DA019A2803600BA1FDC /* rangy-selectionsaverestore.js in Resources */,
+				FD966DA119A2803600BA1FDC /* rangy-serializer.js in Resources */,
+				FD966DA219A2803600BA1FDC /* rangy-textrange.js in Resources */,
 				FDF420431998726500C1A8EA /* Images.xcassets in Resources */,
 				FDF420351998726500C1A8EA /* InfoPlist.strings in Resources */,
 				FDF420A419995E6B00C1A8EA /* RANEditNoteViewController.xib in Resources */,
@@ -507,6 +515,7 @@
 				FDF4205B1998726500C1A8EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FDF4205C1998726500C1A8EA /* Build configuration list for PBXNativeTarget "rangyTestTests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +524,7 @@
 				FDF4205E1998726500C1A8EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
