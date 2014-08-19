@@ -14,8 +14,8 @@ createNoteFromSelection: function () {
     var selection = rangy.getSelection();
     this.highlighter.highlightSelection("HighLighto", selection);
     var newSerializedHighlights = this.highlighter.serialize();
-//        var noteId = getId(oldSerializedHighlights, newSerializedHighlights);
-    var noteId = 1;
+    var noteId = this.getId(oldSerializedHighlights, newSerializedHighlights);
+//    var noteId = 1;
     
     var selectionString = selection.toString();
     
@@ -24,7 +24,7 @@ createNoteFromSelection: function () {
     var note = {
         "noteId": noteId,
         "serializedHighlights": newSerializedHighlights,
-        "selection": selectionString
+        "selection": selectionString,
     };
     return JSON.stringify(note);
 },
@@ -164,7 +164,7 @@ getRanges: function (old) {
         for (var i = 1; i < sections.length; i++) {
             var parts = sections[i].split("$");
             if (parts.length > 0) {
-                ranges.push(new Range(parts[0], parts[1], parts[2], parts[3]));
+                ranges.push(new this.Range(parts[0], parts[1], parts[2], parts[3]));
             }
         }
     }
@@ -183,11 +183,11 @@ containsRange: function (array, range) {
     
 getId: function (oldSerialized, newSerialized) {
     var id = -1;
-    var oldRanges = getRanges(oldSerialized);
-    var newRanges = getRanges(newSerialized);
+    var oldRanges = this.getRanges(oldSerialized);
+    var newRanges = this.getRanges(newSerialized);
     
     for (var i = 0; i < newRanges.length; i++) {
-        if (!containsRange(oldRanges, newRanges[i])) {
+        if (!this.containsRange(oldRanges, newRanges[i])) {
             return newRanges[i].id;
         }
     }
