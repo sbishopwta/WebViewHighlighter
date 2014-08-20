@@ -12,6 +12,12 @@
 @interface RANViewController () <UIWebViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
+@property (strong, nonatomic) NSString *serializedHighlights;
+@property (strong, nonatomic) NSString *noteID;
+@property (strong, nonatomic) NSString *noteSelection;
+
+@property (strong, nonatomic) NSString *start;
+@property (strong, nonatomic) NSString *end;
 
 @end
 
@@ -37,11 +43,11 @@
     [self injectJavascriptFile:@"rangy-selectionsaverestore"];
     [self injectJavascriptFile:@"guidelines"];
     [self.webView stringByEvaluatingJavaScriptFromString:@"rangy.init();"];
-   NSString *test =  [self.webView stringByEvaluatingJavaScriptFromString:
-    [NSString stringWithFormat:@"guidelines.init(%@);", UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"true" : @"false"]];
-
+    NSString *test =  [self.webView stringByEvaluatingJavaScriptFromString:
+                       [NSString stringWithFormat:@"guidelines.init(%@);", UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"true" : @"false"]];
     
-//    [self.webView stringByEvaluatingJavaScriptFromString:@"init()"];
+    
+    //    [self.webView stringByEvaluatingJavaScriptFromString:@"init()"];
 }
 
 - (void)configureWebView
@@ -59,7 +65,7 @@
                               "  </head>\n"
                               "  <body>\n"
                               "    \n"
-                              "    <div class=\"container\">%@",@"blah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUS"];
+                              "    <div class=\"container\">%@",@"blah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUS"];
     
     NSString *footerString = @"</div><!-- /div.container -->\n"
     "\n"
@@ -69,8 +75,8 @@
     "    <script src=\"js/bootstrap.min.js\"></script>\n"
     "  </body>\n"
     "</html>";
-
-   
+    
+    
     NSString *formattedString = [NSString stringWithFormat:@"%@ %@", formatString, footerString];
     NSURL *bundlePath= [[NSBundle mainBundle] bundleURL];
     [self.webView loadHTMLString:formattedString baseURL:bundlePath];
@@ -78,26 +84,67 @@
 
 - (void)configureMenuController
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
     UIMenuItem *highlightItem = [[UIMenuItem alloc] initWithTitle:@"Add Note" action:@selector(createNoteFromSelection)];
-        UIMenuItem *removeHighlight = [[UIMenuItem alloc] initWithTitle:@"Remove Note" action:@selector(removeNoteFromSelection)];
+    UIMenuItem *removeHighlight = [[UIMenuItem alloc] initWithTitle:@"Remove Note" action:@selector(removeAllNotes)];
     [[UIMenuController sharedMenuController] setMenuItems:@[highlightItem, removeHighlight]];
-    });
 }
 
 - (void)createNoteFromSelection
 {
     NSString *createdNoteString = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.createNoteFromSelection();"];
+    NSLog(@"%@", createdNoteString);
+    //    NSString *nodeIDString =
+    NSData *jsonData = [createdNoteString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *e;
+    NSDictionary *jSONDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&e];
     
-    NSString *saveNoteString = [self.webView stringByEvaluatingJavaScriptFromString:@"saveHighlightedText();"];
+    self.noteID = jSONDict[@"noteId"];
+    self.noteSelection = jSONDict[@"selection"];
+    self.serializedHighlights = jSONDict[@"serializedHighlights"];
+    NSLog(@"%@ %@ %@", self.noteID, self.noteSelection, self.serializedHighlights);
+    
+    [self parseHighlights];
+    [self.webView setUserInteractionEnabled:NO];
+    [self.webView setUserInteractionEnabled:YES];
+}
 
+- (void)parseHighlights
+{
+    NSArray *parts = [self.serializedHighlights componentsSeparatedByString:@"|"];
+    
+    if (parts.count > 1)
+    {
+        for (NSString *part in parts)
+        {
+            NSArray *sections = [part componentsSeparatedByString:@"$"];
+            if (sections.count > 3)
+            {
+                if ([sections[2] isEqualToString:self.noteID])
+                {
+                    self.start = sections[0];
+                    self.end = sections[1];
+                }
+            }
+        }
+        
+    }
+    
 }
 
 - (void)removeNoteFromSelection
 {
-    
 }
+
+- (void)removeAllNotes
+{
+    NSString *newSerializedHighlights = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.removeNote(\"%@\", \"%@\", \"%@\");", self.noteID, self.start, self.end]];
+    
+//    NSString *removeAllNotesString = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.highliteInitialSelections(\"%@\")", self.serializedHighlights]];
+//    NSLog(@"%@", removeAllNotesString);
+    [self.webView setUserInteractionEnabled:NO];
+    [self.webView setUserInteractionEnabled:YES];
+}
+
 
 - (void)injectJavascriptFile:(NSString*)file
 {

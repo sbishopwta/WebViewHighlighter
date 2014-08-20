@@ -33,35 +33,40 @@ removeNote: function (position, start, end) {
     
     var idName = "id=\"note_" + (position - 1) + "\"";
     
-    // Shift the start/end char ranges to account for the id attribute added to the highlighted sections
-    start = start - idName.length;
-    end = end - idName.length;
-    
-    
+    var start = start - idName.length;
+    var end = end - idName.length;
+   
     var serializedSelection = "[{\"characterRange\":{\"start\":" + start + ",\"end\":" + end + "},\"backward\":false}]";
-    
     var selection = JSON.parse(serializedSelection);
+    
+    
+//    var selection = JSON.parse(JSON.stringify(sel));
+    
+    
     var rangySelection = rangy.getSelection().restoreCharacterRanges(document.body, selection);
     
     //h2.highlightSelection(highlighterClassName, rangySelection);
     
-    highlighter.unhighlightSelection(rangySelection);
+    this.highlighter.unhighlightSelection(rangySelection);
     //        window.guidelines.noteHighlightRemoved(this.highlighter.serialize());
     
     
     $('#note_' + position).contents().unwrap();
+    
+    return this.highlighter.serialize();
     
     
     //$('#note_' . noteNumber).content().unwrap();
     //window.guidelines.removedNote(highlighter.serialize());
 },
     
-removeAllNotes: function () {
-    $('.HighLighto').content().unwrap();
-},
-    
 scrollToID: function (idName) {
     $(window).scrollTop($('#' + idName).offset().top);
+},
+    
+highliteInitialSelections: function (serializedHighlights){
+        this.highlighter.removeAllHighlights();
+        this.highlighter.deserialize(serializedHighlights);
 },
     
 addNoteClickListener: function (noteNumber, noteInnerHtml) {
@@ -78,7 +83,6 @@ addNoteClickListener: function (noteNumber, noteInnerHtml) {
                           
                           }
                           });
-    
 },
     
 addClickListenersToHighlights: function () {
