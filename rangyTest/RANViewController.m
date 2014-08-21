@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSString *start;
 @property (strong, nonatomic) NSString *end;
 
+@property (strong, nonatomic) NSMutableDictionary *notesDict;
+
 @end
 
 @implementation RANViewController
@@ -29,6 +31,7 @@
     self.webView.delegate = self;
     [self configureWebView];
     [self configureMenuController];
+    self.notesDict = [NSMutableDictionary new];
 }
 
 - (void)setUpJavascript
@@ -93,7 +96,6 @@
 {
     NSString *createdNoteString = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.createNoteFromSelection();"];
     NSLog(@"%@", createdNoteString);
-    //    NSString *nodeIDString =
     NSData *jsonData = [createdNoteString dataUsingEncoding:NSUTF8StringEncoding];
     NSError *e;
     NSDictionary *jSONDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&e];
@@ -102,6 +104,12 @@
     self.noteSelection = jSONDict[@"selection"];
     self.serializedHighlights = jSONDict[@"serializedHighlights"];
     NSLog(@"%@ %@ %@", self.noteID, self.noteSelection, self.serializedHighlights);
+    
+    [self notesDict][self.noteID] = jSONDict;
+    
+    
+    
+    
     
     [self parseHighlights];
     [self.webView setUserInteractionEnabled:NO];
@@ -126,21 +134,26 @@
                 }
             }
         }
-        
+
     }
     
 }
 
 - (void)removeNoteFromSelection
 {
+    
 }
 
 - (void)removeAllNotes
 {
     NSString *newSerializedHighlights = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.removeNote(\"%@\", \"%@\", \"%@\");", self.noteID, self.start, self.end]];
     
-//    NSString *removeAllNotesString = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.highliteInitialSelections(\"%@\")", self.serializedHighlights]];
-//    NSLog(@"%@", removeAllNotesString);
+    
+    NSString *removeAllNotesString = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.highliteInitialSelections(\"%@\")", newSerializedHighlights]];
+    
+//    [self notesDict][self.noteID] = jSONDict;
+    [self.notesDict removeObjectForKey:self.noteID];
+    NSLog(@"%@", removeAllNotesString);
     [self.webView setUserInteractionEnabled:NO];
     [self.webView setUserInteractionEnabled:YES];
 }
