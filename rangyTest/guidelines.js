@@ -15,7 +15,6 @@ createNoteFromSelection: function () {
     this.highlighter.highlightSelection("HighLighto", selection);
     var newSerializedHighlights = this.highlighter.serialize();
     var noteId = this.getId(oldSerializedHighlights, newSerializedHighlights);
-//    var noteId = 1;
     
     var selectionString = selection.toString();
     
@@ -78,30 +77,16 @@ addNoteClickListener: function (noteNumber, noteInnerHtml) {
                           $(this).attr('id', 'note_' + noteNumber);
                           $(this).unbind('click');
                           $(this).click(function () {
-                                        window.guidelines.noteClicked($(this).attr('id'));
+                                        //window.guidelines.noteClicked($(this).attr('id'));
+                                        console.log(noteNumber)
+                                        document.location = 'interal://note/' + noteNumber
+                                        
                                         });
                           
                           }
                           });
 },
     
-addClickListenersToHighlights: function () {
-    $('.HighLighto').unbind('click');
-    $('.HighLighto').click(function () {
-                           
-                           var innerHighlightoHtml = $(this).html();
-                           
-                           $('.HighLighto').each(function (index) {
-                                                 if (innerHighlightoHtml == $(this).html()) {
-                                                 window.guidelines.noteClicked(index);
-                                                 return false;
-                                                 }
-                                                 });
-                           });
-    $('.HighLighto').each(function (index) {
-                          $(this).attr('id', 'note_' + index);
-                          });
-},
     /**
      * Document Height
      */

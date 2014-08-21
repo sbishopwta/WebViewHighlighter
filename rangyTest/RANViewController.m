@@ -68,7 +68,7 @@
                               "  </head>\n"
                               "  <body>\n"
                               "    \n"
-                              "    <div class=\"container\">%@",@"blah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUSblah blah blah blah BHGHFUYSHGUISDHGIUSDN MUDSUGSDIJHIUDSGNIUDGIUDGIUSDGIUSYNFUSHFMYFYUASKGUSFIOSUSFNUSH GHGUISGIOSGUS"];
+                              "    <div class=\"container\">%@",@"What I learned in boating school is what I learned in boating school is What I learned in boating school is What I learned in boating school isWhat I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is"];
     
     NSString *footerString = @"</div><!-- /div.container -->\n"
     "\n"
@@ -106,17 +106,26 @@
     NSLog(@"%@ %@ %@", self.noteID, self.noteSelection, self.serializedHighlights);
     
     [self notesDict][self.noteID] = jSONDict;
+
+    NSString *addClickListener = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.addNoteClickListener(\"%@\",\"%@\");", self.noteID, self.noteSelection]];
     
     
     
-    
-    
-    [self parseHighlights];
+    [self parseSerializedHighlights];
     [self.webView setUserInteractionEnabled:NO];
     [self.webView setUserInteractionEnabled:YES];
 }
 
-- (void)parseHighlights
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        [[UIApplication sharedApplication] openURL:[request URL]];
+        return NO;
+    }
+    return YES;
+}
+
+- (void)parseSerializedHighlights
 {
     NSArray *parts = [self.serializedHighlights componentsSeparatedByString:@"|"];
     
@@ -151,7 +160,6 @@
     
     NSString *removeAllNotesString = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.highliteInitialSelections(\"%@\")", newSerializedHighlights]];
     
-//    [self notesDict][self.noteID] = jSONDict;
     [self.notesDict removeObjectForKey:self.noteID];
     NSLog(@"%@", removeAllNotesString);
     [self.webView setUserInteractionEnabled:NO];
