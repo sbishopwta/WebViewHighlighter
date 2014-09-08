@@ -1,12 +1,19 @@
 var guidelines = {
     
 highlighter: null,
+//searchHighlighter = null;
+
     
 init: function (isTablet) {
     this.highlighter = rangy.createHighlighter();
     this.highlighter.addClassApplier(rangy.createCssClassApplier("HighLighto", {
                                                                  normalize: true
                                                                  }));
+    
+    var searchResultClassName = "SearchResult";
+    var indice = 1;
+
+    
 },
     
 createNoteFromSelection: function () {
@@ -181,6 +188,60 @@ getId: function (oldSerialized, newSerialized) {
         }
     }
     return id;
-}
+},
     
+performSearch: function (searchQuery) {
+        var cssClassApplierModule = rangy.modules.ClassApplier;
+        var searchResultApplier = rangy.createClassApplier(searchResultClassName);
+        
+        // Remove existing highlights && reset index
+        var range = rangy.createRange();
+        var searchScopeRange = rangy.createRange();
+        searchScopeRange.selectNodeContents(document.body);
+        indice = 1;
+        
+        var options = {
+        caseSensitive: false,
+        wholeWordsOnly: false,
+        withinRange: searchScopeRange,
+        direction: "forward" // This is redundant because "forward" is the default
+        };
+        
+        range.selectNodeContents(document.body);
+        searchResultApplier.undoToRange(range);
+        
+        if (searchQuery !== "") {
+            // Iterate over matches
+            var jumpedToFirst = false;
+            while (range.findText(searchQuery, options)) {
+                
+                // range now encompasses the first text match
+                searchResultApplier.applyToRange(range);
+                
+                if(!jumpedToFirst){
+                    $(window).scrollTop($('.' + searchResultClassName).offset().top);
+                    jumpedToFirst = true;
+                }
+                
+                // Collapse the range to the position immediately after the match
+                range.collapse(false);
+            }
+        }
+        
+    },
+    
+nextSearch: function() {
+        $( '.' + searchResultClassName ).each(function( index ) {
+                                              if(index == indice){
+                                              $(window).scrollTop($(this).offset().top);
+                                              return false;
+                                              }
+                                              });
+        indice++;
+        
+        var resultSize = $( '.' + searchResultClassName ).size();
+        if(indice >= resultSize){
+            indice = 0;
+        }
+    },
 };
