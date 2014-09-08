@@ -24,6 +24,11 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="Chx-ie-qhA"/>
                                 </connections>
                             </webView>
+                            <searchBar appearanceType="aqua" contentMode="redraw" fixedFrame="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d5N-EU-WZf">
+                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -35,6 +40,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="KSD-t9-HkL"/>
                     <connections>
+                        <outlet property="searchBar" destination="d5N-EU-WZf" id="KgY-pt-5Z7"/>
                         <outlet property="webView" destination="zdn-U7-Lq5" id="5xB-cb-mmg"/>
                     </connections>
                 </viewController>

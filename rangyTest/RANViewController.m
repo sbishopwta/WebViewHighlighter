@@ -9,9 +9,11 @@
 #import "RANViewController.h"
 
 
-@interface RANViewController () <UIWebViewDelegate>
+@interface RANViewController () <UIWebViewDelegate, UISearchBarDelegate>
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+
 @property (strong, nonatomic) NSString *serializedHighlights;
 @property (strong, nonatomic) NSString *noteID;
 @property (strong, nonatomic) NSString *noteSelection;
@@ -29,6 +31,7 @@
 {
     [super viewDidLoad];
     self.webView.delegate = self;
+    self.searchBar.delegate = self;
     [self configureWebView];
     [self configureMenuController];
     self.notesDict = [NSMutableDictionary new];
@@ -51,6 +54,13 @@
     
     
     //    [self.webView stringByEvaluatingJavaScriptFromString:@"init()"];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    NSString *quoteText = [NSString stringWithFormat:@"\"%@\"", searchText];
+    NSString *searchedString = [self.webView stringByEvaluatingJavaScriptFromString:
+                                [NSString stringWithFormat:@"guidelines.performSearch(%@);", quoteText]];
 }
 
 - (void)configureWebView

@@ -33,6 +33,11 @@ body {
     background-color: #1d8fbb;
 }
 
+.SearchResult
+{
+    background-color: #1d8fbb;
+}
+
 ::selection
 {
 	background-color: #98d9f1;
