@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>6BA62A4B-F9D9-4BA3-AB32-8F6BC5C3A4F2</string>
+	<key>IDESourceControlProjectName</key>
+	<string>rangyTest</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>81669C4F-C177-413F-A337-D24ECF904B3B</key>
+		<string>ssh://github.com/sbishopwta/Rangy-Tests-.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>rangyTest.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>81669C4F-C177-413F-A337-D24ECF904B3B</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/sbishopwta/Rangy-Tests-.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>81669C4F-C177-413F-A337-D24ECF904B3B</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>81669C4F-C177-413F-A337-D24ECF904B3B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>rangyTest</string>
+		</dict>
+	</array>
+</dict>
+</plist>
