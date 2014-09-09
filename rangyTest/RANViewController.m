@@ -49,18 +49,25 @@
     [self injectJavascriptFile:@"rangy-selectionsaverestore"];
     [self injectJavascriptFile:@"guidelines"];
     [self.webView stringByEvaluatingJavaScriptFromString:@"rangy.init();"];
-    NSString *test =  [self.webView stringByEvaluatingJavaScriptFromString:
+    [self.webView stringByEvaluatingJavaScriptFromString:
                        [NSString stringWithFormat:@"guidelines.init(%@);", UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"true" : @"false"]];
     
     
-    //    [self.webView stringByEvaluatingJavaScriptFromString:@"init()"];
 }
+
+#pragma -mark Search Bar Delegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     NSString *quoteText = [NSString stringWithFormat:@"\"%@\"", searchText];
-    NSString *searchedString = [self.webView stringByEvaluatingJavaScriptFromString:
+    //Perform search
+    [self.webView stringByEvaluatingJavaScriptFromString:
                                 [NSString stringWithFormat:@"guidelines.performSearch(%@);", quoteText]];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.nextSearch();"];
 }
 
 - (void)configureWebView
@@ -78,7 +85,7 @@
                               "  </head>\n"
                               "  <body>\n"
                               "    \n"
-                              "    <div class=\"container\">%@",@"What I learned in boating school is what I learned in boating school is What I learned in boating school is What I learned in boating school isWhat I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is What I learned in boating school is"];
+                              "    <div class=\"container\">%@",@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius nisl ut lacus venenatis blandit. Fusce orci augue, tristique ac dictum sed, rhoncus vitae velit. Etiam ullamcorper vel diam ut rutrum. Praesent quis felis turpis. Donec et consectetur est, accumsan luctus tortor. Fusce dui diam, placerat ut imperdiet ac, dapibus ac dui. Suspendisse efficitur vitae nisl mollis posuere. Duis cursus rutrum blandit. Duis laoreet odio a lectus ornare, at pretium lorem blandit. Donec sit amet nisl non tortor tristique efficitur. Ut non aliquet sem.Quisque vel sodales urna, sed suscipit turpis. Suspendisse augue lectus, condimentum eget pulvinar quis, pulvinar ut nunc. In ut malesuada diam. Proin consequat et turpis at fringilla. Nunc congue id sem non tincidunt. Proin condimentum cursus metus, quis posuere nulla varius sed. Donec interdum lectus nunc, sed consequat nibh faucibus sed. Fusce eleifend urna eu mauris mollis, vel lacinia mauris tincidunt. Mauris ac metus interdum, accumsan sem vitae, venenatis nunc. Sed condimentum dictum gravida. Ut faucibus rhoncus maximus. Donec pharetra egestas mauris, sed laoreet massa dapibus quis. Duis ex massa, volutpat et ante sed, laoreet luctus ligulaa"];
     
     NSString *footerString = @"</div><!-- /div.container -->\n"
     "\n"
@@ -116,8 +123,10 @@
     NSLog(@"%@ %@ %@", self.noteID, self.noteSelection, self.serializedHighlights);
     
     [self notesDict][self.noteID] = jSONDict;
-
-    NSString *addClickListener = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.addNoteClickListener(\"%@\",\"%@\");", self.noteID, self.noteSelection]];
+    
+    
+    //Add click listener
+   [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.addNoteClickListener(\"%@\",\"%@\");", self.noteID, self.noteSelection]];
     
     
     
@@ -190,23 +199,5 @@
     [self setUpJavascript];
     NSLog(@"Webview finished loading");
 }
-
-
-//- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
-//{
-//    if( action == @selector(removeNoteFromSelection))
-//    {
-//        NSString* ret = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.hiliter.selectionOverlapsHighlight();"];
-//        BOOL isHighlighted = [ret boolValue];
-//        return isHighlighted;
-//    }
-////    if(action == @selector(addNote))
-////    {
-////        return !self.showNote;
-////    }
-//
-//    return [super canPerformAction:action withSender:sender];
-//}
-
 
 @end

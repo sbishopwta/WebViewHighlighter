@@ -41,12 +41,7 @@ removeNote: function (position, start, end) {
     var selection = JSON.parse(serializedSelection);
     
     
-//    var selection = JSON.parse(JSON.stringify(sel));
-    
-    
     var rangySelection = rangy.getSelection().restoreCharacterRanges(document.body, selection);
-    
-    //h2.highlightSelection(highlighterClassName, rangySelection);
     
     this.highlighter.unhighlightSelection(rangySelection);
     //        window.guidelines.noteHighlightRemoved(this.highlighter.serialize());
@@ -55,10 +50,6 @@ removeNote: function (position, start, end) {
     $('#note_' + position).contents().unwrap();
     
     return this.highlighter.serialize();
-    
-    
-    //$('#note_' . noteNumber).content().unwrap();
-    //window.guidelines.removedNote(highlighter.serialize());
 },
     
 scrollToID: function (idName) {
@@ -184,6 +175,20 @@ getId: function (oldSerialized, newSerialized) {
     }
     return id;
 },
+nextSearch: function() {
+    $( '.' + this.searchResultClassName ).each(function( index ) {
+                                               if(index == indice){
+                                               $(window).scrollTop($(this).offset().top);
+                                               return false;
+                                               }
+                                               });
+    indice++;
+    
+    var resultSize = $( '.' + this.searchResultClassName ).size();
+    if(indice >= resultSize){
+        indice = 0;
+    }
+},
     
 performSearch: function (searchQuery) {
         var cssClassApplierModule = rangy.modules.ClassApplier;
@@ -225,18 +230,5 @@ performSearch: function (searchQuery) {
         
     },
     
-nextSearch: function() {
-        $( '.' + this.searchResultClassName ).each(function( index ) {
-                                              if(index == this.indice){
-                                              $(window).scrollTop($(this).offset().top);
-                                              return false;
-                                              }
-                                              });
-        indice++;
-        
-        var resultSize = $( '.' + this.searchResultClassName ).size();
-        if(indice >= resultSize){
-            indice = 0;
-        }
-    },
+
 };
