@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3489551019C34ED2008C818A /* RANWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3489550F19C34ED2008C818A /* RANWebView.m */; };
 		FD966D9A19A2803600BA1FDC /* guidelines.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8819A2801C00BA1FDC /* guidelines.js */; };
 		FD966D9B19A2803600BA1FDC /* jquery-2.1.1.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8919A2801C00BA1FDC /* jquery-2.1.1.js */; };
 		FD966D9C19A2803600BA1FDC /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = FD966D8A19A2801C00BA1FDC /* jquery.js */; };
@@ -46,7 +47,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		FD966D8819A2801C00BA1FDC /* guidelines.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = guidelines.js; sourceTree = "<group>"; };
+		3489550E19C34ED2008C818A /* RANWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RANWebView.h; sourceTree = "<group>"; };
+		3489550F19C34ED2008C818A /* RANWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RANWebView.m; sourceTree = "<group>"; };
+		FD966D8819A2801C00BA1FDC /* guidelines.js */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; path = guidelines.js; sourceTree = "<group>"; };
 		FD966D8919A2801C00BA1FDC /* jquery-2.1.1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-2.1.1.js"; sourceTree = "<group>"; };
 		FD966D8A19A2801C00BA1FDC /* jquery.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.js; sourceTree = "<group>"; };
 		FD966D8B19A2801C00BA1FDC /* rangy-core.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rangy-core.js"; sourceTree = "<group>"; };
@@ -148,6 +151,8 @@
 				FDF420A219995E6B00C1A8EA /* RANEditNoteViewController.xib */,
 				FDF420421998726500C1A8EA /* Images.xcassets */,
 				FDF420311998726500C1A8EA /* Supporting Files */,
+				3489550E19C34ED2008C818A /* RANWebView.h */,
+				3489550F19C34ED2008C818A /* RANWebView.m */,
 			);
 			path = rangyTest;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 				FDF420371998726500C1A8EA /* main.m in Sources */,
 				FDF420A319995E6B00C1A8EA /* RANEditNoteViewController.m in Sources */,
 				FDF420411998726500C1A8EA /* RANViewController.m in Sources */,
+				3489551019C34ED2008C818A /* RANWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
