@@ -124,12 +124,6 @@
     
     [self notesDict][self.noteID] = jSONDict;
     
-    
-    //Add click listener
-   [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.addNoteClickListener(\"%@\",\"%@\");", self.noteID, self.noteSelection]];
-    
-    
-    
     [self parseSerializedHighlights];
     [self.webView setUserInteractionEnabled:NO];
     [self.webView setUserInteractionEnabled:YES];
@@ -137,11 +131,27 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        [[UIApplication sharedApplication] openURL:[request URL]];
-        return NO;
+    BOOL load = YES;
+    
+    switch (navigationType)
+    {
+        case UIWebViewNavigationTypeLinkClicked:
+            [[UIApplication sharedApplication] openURL:[request URL]];
+            load = NO;
+            break;
+        case UIWebViewNavigationTypeOther:
+            NSLog(@"%@", request);
+            load = NO;
+            break;
+        case UIWebViewNavigationTypeFormSubmitted:
+        case UIWebViewNavigationTypeBackForward:
+        case UIWebViewNavigationTypeReload:
+        case UIWebViewNavigationTypeFormResubmitted:
+        default:
+            break;
     }
-    return YES;
+    
+    return load;
 }
 
 - (void)parseSerializedHighlights

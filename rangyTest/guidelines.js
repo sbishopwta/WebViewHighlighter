@@ -1,10 +1,10 @@
 var guidelines = {
     
 highlighter: null,
-searchResultClassName : "SearchResult",
-indice : 1,
+    searchResultClassName : "SearchResult",
+    indice : 1,
     
-init: function (isTablet) {
+init: function () {
     this.highlighter = rangy.createHighlighter();
     this.highlighter.addClassApplier(rangy.createCssClassApplier("HighLighto", {
                                                                  normalize: true
@@ -19,6 +19,14 @@ createNoteFromSelection: function () {
     var noteId = this.getId(oldSerializedHighlights, newSerializedHighlights);
     
     var selectionString = selection.toString();
+    
+    var element = selection.nativeSelection.anchorNode.parentElement;
+    $(element).attr('id', 'note_' + noteId);
+    $(element).unbind('click');
+    $(element).click(function () {
+                     //window.guidelines.noteClicked($(this).attr('id'));
+                     document.location = 'glc://note/' + noteId;
+                     });
     
     rangy.getSelection().removeAllRanges();
     
@@ -36,7 +44,7 @@ removeNote: function (position, start, end) {
     
     var start = start - idName.length;
     var end = end - idName.length;
-   
+    
     var serializedSelection = "[{\"characterRange\":{\"start\":" + start + ",\"end\":" + end + "},\"backward\":false}]";
     var selection = JSON.parse(serializedSelection);
     
@@ -57,27 +65,8 @@ scrollToID: function (idName) {
 },
     
 highliteInitialSelections: function (serializedHighlights){
-        this.highlighter.removeAllHighlights();
-        this.highlighter.deserialize(serializedHighlights);
-},
-    
-addNoteClickListener: function (noteNumber, noteInnerHtml) {
-    
-    $('.HighLighto').each(function (index) {
-                          
-                          if (noteInnerHtml.indexOf($(this).text()) > -1) {
-                          
-                          $(this).attr('id', 'note_' + noteNumber);
-                          $(this).unbind('click');
-                          $(this).click(function () {
-                                        //window.guidelines.noteClicked($(this).attr('id'));
-                                        console.log(noteNumber)
-                                        document.location = 'interal://note/' + noteNumber
-                                        
-                                        });
-                          
-                          }
-                          });
+    this.highlighter.removeAllHighlights();
+    this.highlighter.deserialize(serializedHighlights);
 },
     
     /**
@@ -191,44 +180,44 @@ nextSearch: function() {
 },
     
 performSearch: function (searchQuery) {
-        var cssClassApplierModule = rangy.modules.ClassApplier;
-        var searchResultApplier = rangy.createClassApplier(this.searchResultClassName);
-        
-        // Remove existing highlights && reset index
-        var range = rangy.createRange();
-        var searchScopeRange = rangy.createRange();
-        searchScopeRange.selectNodeContents(document.body);
-        indice = 1;
-        
-        var options = {
-        caseSensitive: false,
-        wholeWordsOnly: false,
-        withinRange: searchScopeRange,
-        direction: "forward" // This is redundant because "forward" is the default
-        };
-        
-        range.selectNodeContents(document.body);
-        searchResultApplier.undoToRange(range);
-        
-        if (searchQuery !== "") {
-            // Iterate over matches
-            var jumpedToFirst = false;
-            while (range.findText(searchQuery, options)) {
-                
-                // range now encompasses the first text match
-                searchResultApplier.applyToRange(range);
-                
-                if(!jumpedToFirst){
-                    $(window).scrollTop($('.' + this.searchResultClassName).offset().top);
-                    jumpedToFirst = true;
-                }
-                
-                // Collapse the range to the position immediately after the match
-                range.collapse(false);
-            }
-        }
-        
-    },
+    var cssClassApplierModule = rangy.modules.ClassApplier;
+    var searchResultApplier = rangy.createClassApplier(this.searchResultClassName);
     
-
+    // Remove existing highlights && reset index
+    var range = rangy.createRange();
+    var searchScopeRange = rangy.createRange();
+    searchScopeRange.selectNodeContents(document.body);
+    indice = 1;
+    
+    var options = {
+    caseSensitive: false,
+    wholeWordsOnly: false,
+    withinRange: searchScopeRange,
+    direction: "forward" // This is redundant because "forward" is the default
+    };
+    
+    range.selectNodeContents(document.body);
+    searchResultApplier.undoToRange(range);
+    
+    if (searchQuery !== "") {
+        // Iterate over matches
+        var jumpedToFirst = false;
+        while (range.findText(searchQuery, options)) {
+            
+            // range now encompasses the first text match
+            searchResultApplier.applyToRange(range);
+            
+            if(!jumpedToFirst){
+                $(window).scrollTop($('.' + this.searchResultClassName).offset().top);
+                jumpedToFirst = true;
+            }
+            
+            // Collapse the range to the position immediately after the match
+            range.collapse(false);
+        }
+    }
+    
+},
+    
+    
 };
