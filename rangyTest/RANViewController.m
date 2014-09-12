@@ -7,21 +7,12 @@
 //
 
 #import "RANViewController.h"
+#import "RANWebView.h"
 
+@interface RANViewController () <RANWebViewDelegate, UISearchBarDelegate>
 
-@interface RANViewController () <UIWebViewDelegate, UISearchBarDelegate>
-
-@property (strong, nonatomic) IBOutlet UIWebView *webView;
+@property (strong, nonatomic) IBOutlet RANWebView *webView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-
-@property (strong, nonatomic) NSString *serializedHighlights;
-@property (strong, nonatomic) NSString *noteID;
-@property (strong, nonatomic) NSString *noteSelection;
-
-@property (strong, nonatomic) NSString *start;
-@property (strong, nonatomic) NSString *end;
-
-@property (strong, nonatomic) NSMutableDictionary *notesDict;
 
 @end
 
@@ -33,41 +24,18 @@
     self.webView.delegate = self;
     self.searchBar.delegate = self;
     [self configureWebView];
-    [self configureMenuController];
-    self.notesDict = [NSMutableDictionary new];
-}
-
-- (void)setUpJavascript
-{
-    [self injectJavascriptFile:@"rangy-core"];
-    [self injectJavascriptFile:@"rangy-serializer"];
-    [self injectJavascriptFile:@"rangy-cssclassapplier"];
-    [self injectJavascriptFile:@"rangy-highlighter"];
-    [self injectJavascriptFile:@"rangy-textrange"];
-    [self injectJavascriptFile:@"jquery-2.1.1"];
-    [self injectJavascriptFile:@"jquery"];
-    [self injectJavascriptFile:@"rangy-selectionsaverestore"];
-    [self injectJavascriptFile:@"guidelines"];
-    [self.webView stringByEvaluatingJavaScriptFromString:@"rangy.init();"];
-    [self.webView stringByEvaluatingJavaScriptFromString:
-                       [NSString stringWithFormat:@"guidelines.init(%@);", UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"true" : @"false"]];
-    
-    
 }
 
 #pragma -mark Search Bar Delegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    NSString *quoteText = [NSString stringWithFormat:@"\"%@\"", searchText];
-    //Perform search
-    [self.webView stringByEvaluatingJavaScriptFromString:
-                                [NSString stringWithFormat:@"guidelines.performSearch(%@);", quoteText]];
+    [self.webView performSearchForString:searchText];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.nextSearch();"];
+    [self.webView jumpToNextOccurrenceOfSearchString];
 }
 
 - (void)configureWebView
@@ -102,33 +70,6 @@
     [self.webView loadHTMLString:formattedString baseURL:bundlePath];
 }
 
-- (void)configureMenuController
-{
-    UIMenuItem *highlightItem = [[UIMenuItem alloc] initWithTitle:@"Add Note" action:@selector(createNoteFromSelection)];
-    UIMenuItem *removeHighlight = [[UIMenuItem alloc] initWithTitle:@"Remove Note" action:@selector(removeAllNotes)];
-    [[UIMenuController sharedMenuController] setMenuItems:@[highlightItem, removeHighlight]];
-}
-
-- (void)createNoteFromSelection
-{
-    NSString *createdNoteString = [self.webView stringByEvaluatingJavaScriptFromString:@"guidelines.createNoteFromSelection();"];
-    NSLog(@"%@", createdNoteString);
-    NSData *jsonData = [createdNoteString dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *e;
-    NSDictionary *jSONDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&e];
-    
-    self.noteID = jSONDict[@"noteId"];
-    self.noteSelection = jSONDict[@"selection"];
-    self.serializedHighlights = jSONDict[@"serializedHighlights"];
-    NSLog(@"%@ %@ %@", self.noteID, self.noteSelection, self.serializedHighlights);
-    
-    [self notesDict][self.noteID] = jSONDict;
-    
-    [self parseSerializedHighlights];
-    [self.webView setUserInteractionEnabled:NO];
-    [self.webView setUserInteractionEnabled:YES];
-}
-
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     BOOL load = YES;
@@ -140,9 +81,6 @@
             load = NO;
             break;
         case UIWebViewNavigationTypeOther:
-            NSLog(@"%@", request);
-            load = NO;
-            break;
         case UIWebViewNavigationTypeFormSubmitted:
         case UIWebViewNavigationTypeBackForward:
         case UIWebViewNavigationTypeReload:
@@ -154,60 +92,14 @@
     return load;
 }
 
-- (void)parseSerializedHighlights
-{
-    NSArray *parts = [self.serializedHighlights componentsSeparatedByString:@"|"];
-    
-    if (parts.count > 1)
-    {
-        for (NSString *part in parts)
-        {
-            NSArray *sections = [part componentsSeparatedByString:@"$"];
-            if (sections.count > 3)
-            {
-                if ([sections[2] isEqualToString:self.noteID])
-                {
-                    self.start = sections[0];
-                    self.end = sections[1];
-                }
-            }
-        }
-
-    }
-    
-}
-
-- (void)removeNoteFromSelection
+- (void)webView:(RANWebView *)webView didAddNote:(RANWebViewNote *)note
 {
     
 }
 
-- (void)removeAllNotes
+- (void)webView:(RANWebView *)webView didSelectNote:(RANWebViewNote *)note
 {
-    NSString *newSerializedHighlights = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.removeNote(\"%@\", \"%@\", \"%@\");", self.noteID, self.start, self.end]];
     
-    
-    NSString *removeAllNotesString = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"guidelines.highliteInitialSelections(\"%@\")", newSerializedHighlights]];
-    
-    [self.notesDict removeObjectForKey:self.noteID];
-    NSLog(@"%@", removeAllNotesString);
-    [self.webView setUserInteractionEnabled:NO];
-    [self.webView setUserInteractionEnabled:YES];
-}
-
-
-- (void)injectJavascriptFile:(NSString*)file
-{
-    NSString *jsPath = [[NSBundle mainBundle] pathForResource:file ofType:@"js"];
-    NSString *js = [NSString stringWithContentsOfFile:jsPath encoding:NSUTF8StringEncoding error:NULL];
-    
-    [self.webView stringByEvaluatingJavaScriptFromString:js];
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    [self setUpJavascript];
-    NSLog(@"Webview finished loading");
 }
 
 @end

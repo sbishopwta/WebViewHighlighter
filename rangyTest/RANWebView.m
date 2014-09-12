@@ -61,11 +61,39 @@
 
 #pragma mark -
 
+@interface RANWebViewNote ()
+@property (nonatomic, strong) NSString *start;
+@property (nonatomic, strong) NSString *end;
+@end
+
+@implementation RANWebViewNote
+
+- (void)setSerializedHighlight:(NSString *)serializedHighlight
+{
+    serializedHighlight = [serializedHighlight stringByReplacingOccurrencesOfString:@"type:textContent|"
+                                                                         withString:@""];
+    _serializedHighlight = serializedHighlight;
+    
+    NSArray *parts = [serializedHighlight componentsSeparatedByString:@"$"];
+    if ([parts count] >= 3 && [parts[2] isEqualToString:self.noteID])
+    {
+        self.start = parts[0];
+        self.end = parts[1];
+    }
+}
+
+@end
+
+
+#pragma mark -
+
 @interface RANWebView ()
 @property (nonatomic, strong) RANWebViewDelegateInterceptor *interceptor;
 @end
 
+
 @implementation RANWebView
+
 
 #pragma mark - Synthesis Override
 
@@ -81,7 +109,7 @@
 }
 
 
-#pragma mark - Initialization
+#pragma mark - Lifecycle
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -101,15 +129,19 @@
 
 - (void)setup
 {
+    self.notes = @[];
     self.interceptor = [RANWebViewDelegateInterceptor new];
     self.interceptor.middleMan = self;
     [super setDelegate:(id)self.interceptor];
     
     UIMenuItem *addNoteItem = [[UIMenuItem alloc] initWithTitle:@"Add Note"
                                                          action:@selector(addNoteFromSelection:)];
-    UIMenuItem *removeNotItem = [[UIMenuItem alloc] initWithTitle:@"Remove Note"
-                                                           action:@selector(removeNoteFromSelection:)];
-    [[UIMenuController sharedMenuController] setMenuItems:@[addNoteItem, removeNotItem]];
+    [[UIMenuController sharedMenuController] setMenuItems:@[addNoteItem]];
+}
+
+- (void)dealloc
+{
+    [[UIMenuController sharedMenuController] setMenuItems:nil];
 }
 
 
@@ -125,7 +157,8 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
         && [request.URL.scheme isEqualToString:@"glc"])
     {
         load = NO;
-        // TODO: Callback for note selected
+        NSString *noteID = request.URL.lastPathComponent;
+        [self selectNoteWithID:noteID];
     }
     else if ([self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)])
     {
@@ -162,8 +195,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     [self injectJavaScriptFile:@"guidelines"];
     [self stringByEvaluatingJavaScriptFromString:@"rangy.init();"];
     [self stringByEvaluatingJavaScriptFromString:@"guidelines.init();"];
-    
-    
 }
 
 - (void)injectJavaScriptFile:(NSString *)file
@@ -185,25 +216,35 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     
     NSData *jsonData = [createdNoteString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:NULL];
+    NSString *serializedHighlights = dict[@"serializedHighlights"];
+    NSArray *highlights = [serializedHighlights componentsSeparatedByString:@"|"];
     
-    RANNote *note = [RANNote new];
+    RANWebViewNote *note = [RANWebViewNote new];
     note.noteID = dict[@"noteId"];
     note.highlightedContent = dict[@"selection"];
-    note.serializedHighlight = dict[@"serializedHighlights"];
-    _notes = [self.notes arrayByAddingObject:note]; // avoid the overridden setter
+    note.serializedHighlight = [highlights lastObject];
+    [self addNote:note];
     
-    NSString *javaScript = [NSString stringWithFormat:@"guidelines.addNoteClickListener(\"%@\",\"%@\");",
-                            note.noteID, note.highlightedContent];
-    [self stringByEvaluatingJavaScriptFromString:javaScript];
-    
-    
-    
-//    [self parseSerializedHighlights];
+    if ([self.delegate respondsToSelector:@selector(webView:didAddNote:)])
+    {
+        [self.delegate webView:self didAddNote:note];
+    }
 }
 
-- (void)removeNoteFromSelection:(id)sender
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
+    BOOL canPerform = NO;
+    NSString *actionString = NSStringFromSelector(action);
+    if ([actionString isEqualToString:NSStringFromSelector(@selector(addNoteFromSelection:))])
+    {
+        canPerform = YES;
+    }
+    else
+    {
+        canPerform = [super canPerformAction:action withSender:sender];
+    }
     
+    return canPerform;
 }
 
 
@@ -212,20 +253,69 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 - (void)setNotes:(NSArray *)notes
 {
     _notes = notes;
-}
-
-- (void)addNote:(RANNote *)note
-{
+    [self stringByEvaluatingJavaScriptFromString:@"guidelines.highlighter.removeAllHighlights();"];
     
+    if (notes && [notes count] > 0)
+    {
+        NSMutableArray *highlights = [[notes valueForKeyPath:@"@unionOfObjects.serializedHighlight"] mutableCopy];
+        [highlights insertObject:@"type:textContent" atIndex:0];
+        NSString *highlightsString = [highlights componentsJoinedByString:@"|"];
+        NSString *js = [NSString stringWithFormat:@"guidelines.highliteInitialSelections(\"%@\");", highlightsString];
+        [self stringByEvaluatingJavaScriptFromString:js];
+        
+        // prevents funky selection after highlight
+        [self setUserInteractionEnabled:NO];
+        [self setUserInteractionEnabled:YES];
+    }
 }
 
-- (void)deleteNote:(RANNote *)note
+- (void)addNote:(RANWebViewNote *)note
 {
-    
+    self.notes = [self.notes arrayByAddingObject:note];
 }
 
-@end
+- (void)removeNote:(RANWebViewNote *)note
+{
+    NSMutableArray *notes = [self.notes mutableCopy];
+    [notes removeObject:note];
+    self.notes = [NSArray arrayWithArray:notes];
+}
+
+- (void)removeAllNotes
+{
+    self.notes = @[];
+}
+
+- (void)selectNote:(RANWebViewNote *)note
+{
+    NSString *js = [NSString stringWithFormat:@"guidelines.scrollToID(\"note_%@\");", note.noteID];
+    [self stringByEvaluatingJavaScriptFromString:js];
+}
+
+- (void)selectNoteWithID:(NSString *)noteID
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"noteID = %@", noteID];
+    RANWebViewNote *note = [[self.notes filteredArrayUsingPredicate:predicate] firstObject];
+    [self selectNote:note];
+    
+    if ([self.delegate respondsToSelector:@selector(webView:didSelectNote:)])
+    {
+        [self.delegate webView:self didSelectNote:note];
+    }
+}
 
 
-@implementation RANNote
+#pragma mark - Searching
+
+- (void)performSearchForString:(NSString *)string
+{
+    NSString *js = [NSString stringWithFormat:@"guidelines.performSearch(\"%@\");", string];
+    [self stringByEvaluatingJavaScriptFromString:js];
+}
+
+- (void)jumpToNextOccurrenceOfSearchString
+{
+    [self stringByEvaluatingJavaScriptFromString:@"guidelines.nextSearch();"];
+}
+
 @end

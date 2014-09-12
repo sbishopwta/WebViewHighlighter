@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@class RANNote;
+@class RANWebView;
+@class RANWebViewNote;
 
 @protocol RANWebViewDelegate <UIWebViewDelegate>
+
+@optional
+- (void)webView:(RANWebView *)webView didAddNote:(RANWebViewNote *)note;
+- (void)webView:(RANWebView *)webView didSelectNote:(RANWebViewNote *)note;
 
 @end
 
@@ -20,12 +25,18 @@
 @property(nonatomic, assign) id<RANWebViewDelegate> delegate;
 @property(nonatomic, strong) NSArray *notes;
 
-- (void)addNote:(RANNote *)note;
+- (void)selectNote:(RANWebViewNote *)note;
+- (void)addNote:(RANWebViewNote *)note;
+- (void)removeNote:(RANWebViewNote *)note;
+- (void)removeAllNotes;
+
+- (void)performSearchForString:(NSString *)string;
+- (void)jumpToNextOccurrenceOfSearchString;
 
 @end
 
 
-@interface RANNote : NSObject
+@interface RANWebViewNote : NSObject
 @property (nonatomic, strong) NSString *noteID;
 @property (nonatomic, strong) NSString *highlightedContent;
 @property (nonatomic, strong) NSString *serializedHighlight;
