@@ -70,16 +70,27 @@
 
 - (void)setSerializedHighlight:(NSString *)serializedHighlight
 {
-    serializedHighlight = [serializedHighlight stringByReplacingOccurrencesOfString:@"type:textContent|"
-                                                                         withString:@""];
     _serializedHighlight = serializedHighlight;
-    
     NSArray *parts = [serializedHighlight componentsSeparatedByString:@"$"];
-    if ([parts count] >= 3 && [parts[2] isEqualToString:self.noteID])
+    if ([parts count] >= 3)
     {
+        NSParameterAssert([parts[2] isEqualToString:self.noteID]);
         self.start = parts[0];
         self.end = parts[1];
     }
+}
+
+- (BOOL)isEqual:(id)object
+{
+    BOOL equal = NO;
+    
+    if ([object isKindOfClass:[RANWebViewNote class]])
+    {
+        RANWebViewNote *note = object;
+        equal = [note.noteID isEqualToString:self.noteID];
+    }
+    
+    return equal;
 }
 
 @end
@@ -216,14 +227,27 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     
     NSData *jsonData = [createdNoteString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:NULL];
-    NSString *serializedHighlights = dict[@"serializedHighlights"];
-    NSArray *highlights = [serializedHighlights componentsSeparatedByString:@"|"];
     
     RANWebViewNote *note = [RANWebViewNote new];
     note.noteID = dict[@"noteId"];
     note.highlightedContent = dict[@"selection"];
-    note.serializedHighlight = [highlights lastObject];
-    [self addNote:note];
+    
+    NSString *serializedHighlights = dict[@"serializedHighlights"];
+    NSArray *highlights = [serializedHighlights componentsSeparatedByString:@"|"];
+    for (NSString *highlight in highlights)
+    {
+        NSArray *parts = [highlight componentsSeparatedByString:@"$"];
+        if ([parts count] >= 3 && [parts[2] isEqualToString:note.noteID])
+        {
+            note.serializedHighlight = highlight;
+        }
+    }
+    
+    _notes = [self.notes arrayByAddingObject:note]; // avoid the overridden setter
+    
+    // prevents funky selection after highlight
+    [self setUserInteractionEnabled:NO];
+    [self setUserInteractionEnabled:YES];
     
     if ([self.delegate respondsToSelector:@selector(webView:didAddNote:)])
     {
@@ -253,7 +277,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 - (void)setNotes:(NSArray *)notes
 {
     _notes = notes;
-    [self stringByEvaluatingJavaScriptFromString:@"guidelines.highlighter.removeAllHighlights();"];
     
     if (notes && [notes count] > 0)
     {
@@ -266,6 +289,10 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
         // prevents funky selection after highlight
         [self setUserInteractionEnabled:NO];
         [self setUserInteractionEnabled:YES];
+    }
+    else
+    {
+        [self stringByEvaluatingJavaScriptFromString:@"guidelines.removeAllHighlights();"];
     }
 }
 

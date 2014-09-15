@@ -64,11 +64,44 @@ scrollToID: function (idName) {
     $(window).scrollTop($('#' + idName).offset().top);
 },
     
-highliteInitialSelections: function (serializedHighlights){
-    this.highlighter.removeAllHighlights();
+highliteInitialSelections: function (serializedHighlights) {
+    this.removeAllHighlights();
     this.highlighter.deserialize(serializedHighlights);
-},
     
+    var highlights = serializedHighlights.split("|");
+    if (highlights.length == 1) return;
+    
+    for (index = 1; index < highlights.length; ++index) {
+        var hl = highlights[index];
+        var parts = hl.split("$"); console.log(parts);
+        var id = parts[2];
+        
+        var start = parseInt(parts[0]);// - idName.length;
+        var end = parseInt(parts[1]);// - idName.length;
+        
+        var serializedSelection = "[{\"characterRange\":{\"start\":" + start + ",\"end\":" + end + "},\"backward\":false}]";
+        var selection = JSON.parse(serializedSelection); console.log(selection);
+        rangy.getSelection().restoreCharacterRanges(document.body, selection);
+        
+        var element = rangy.getSelection().nativeSelection.anchorNode.parentElement;
+        $(element).attr('id', 'note_' + id);
+        $(element).unbind('click');
+        $(element).click(function () {
+                         //window.guidelines.noteClicked($(this).attr('id'));
+                         document.location = 'glc://note/' + id;
+                         });
+    }
+    
+    return this.highlighter.serialize();
+},
+
+removeAllHighlights: function () {
+    $('.HighLighto').each(function (index) {
+                          $(this).contents().unwrap();
+                          });
+    this.highlighter.removeAllHighlights();
+},
+
     /**
      * Document Height
      */

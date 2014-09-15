@@ -99,7 +99,7 @@
 
 - (void)webView:(RANWebView *)webView didSelectNote:(RANWebViewNote *)note
 {
-    
+    [webView removeNote:note];
 }
 
 @end
